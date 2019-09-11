@@ -1,0 +1,30 @@
+{
+  "name": "nodejs-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "hotnode app.js",
+    "start": "npm run dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-koa": "^2.8.1",
+    "fs-extra": "^8.1.0",
+    "graphql": "^14.4.2",
+    "http-proxy-middleware": "^0.19.1",
+    "koa": "^2.7.0",
+    "koa-body": "^4.1.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-server-http-proxy": "^0.1.0",
+    "koa2-cors": "^2.0.6",
+    "koa2-proxy": "^1.1.7",
+    "moment": "^2.24.0",
+    "mongoose": "^5.6.13",
+    "pure": "^2.85.0",
+    "pure-css": "^1.0.4"
+  }
+}
