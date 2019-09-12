@@ -1,19 +1,27 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:10.16.3-alpine'
+            args '-p 3000:3000'
+        }
+    }
     environment { 
         CI = 'true'
     }
     stages {
         stage('Build') {
             steps {
-                sh ''
+                sh '''
+                    rm -rf /home/node/*
+                    mv ./* /home/node
+                '''
             }
         }
         stage('Deliver') { 
             steps {
                 sh '''
-                    rm -rf /home/nginx/www/react-mixture/*
-                    mv ./build/* /home/nginx/www/react-mixture
+                   yarn
+                   yarn start
                 '''  
             }
         }
