@@ -26,7 +26,6 @@ pipeline {
                     OLD_BUILD_ID=$BUILD_ID
                     echo $OLD_BUILD_ID
                     BUILD_ID=dontKillMe
-                    ./run.sh restart
 
                     yarn start
 
