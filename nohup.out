@@ -1,0 +1,6 @@
+yarn run v1.16.0
+warning ../../../package.json: No license field
+$ node app.js
+yarn run v1.16.0
+warning ../../../package.json: No license field
+$ node app.js

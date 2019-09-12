@@ -21,16 +21,10 @@ pipeline {
             steps {
                 sh '''
                     cd /home/node
+                    yarn add forever global
                     yarn
-
-                    OLD_BUILD_ID=$BUILD_ID
-                    echo $OLD_BUILD_ID
-                    BUILD_ID=dontKillMe
-
-                    yarn start
-
-                    BUILD_ID=$OLD_BUILD_ID
-                    echo $BUILD_ID
+                    forever stop app.js
+                    forever start app.js
                     exit
                 '''  
             }
