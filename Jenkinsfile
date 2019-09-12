@@ -20,6 +20,7 @@ pipeline {
         stage('Deliver') { 
             steps {
                 sh '''
+                   cd /home/node
                    yarn
                    yarn start
                 '''  
