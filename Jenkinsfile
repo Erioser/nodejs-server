@@ -31,6 +31,7 @@ pipeline {
 
                     BUILD_ID=$OLD_BUILD_ID
                     echo $BUILD_ID
+                    exit
                 '''  
             }
         }
