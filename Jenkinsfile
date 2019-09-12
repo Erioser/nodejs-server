@@ -20,9 +20,18 @@ pipeline {
         stage('Deliver') { 
             steps {
                 sh '''
-                   cd /home/node
-                   yarn
-                   yarn start
+                    cd /home/node
+                    yarn
+
+                    OLD_BUILD_ID=$BUILD_ID
+                    echo $OLD_BUILD_ID
+                    BUILD_ID=dontKillMe
+                    ./run.sh restart
+
+                    yarn start
+
+                    BUILD_ID=$OLD_BUILD_ID
+                    echo $BUILD_ID
                 '''  
             }
         }
