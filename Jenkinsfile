@@ -21,7 +21,7 @@ pipeline {
             steps {
                 sh '''
                     cd /home/node
-                    yarn add forever global
+                    yarn global add forever 
                     yarn
                     forever stopall
                     forever start app.js
