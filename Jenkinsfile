@@ -23,7 +23,7 @@ pipeline {
                     cd /home/node
                     yarn add forever global
                     yarn
-                    forever stop app.js
+                    forever stopall
                     forever start app.js
                     exit
                 '''  
