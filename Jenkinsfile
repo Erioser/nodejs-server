@@ -21,6 +21,7 @@ pipeline {
             steps {
                 sh '''
                     cd /home/node
+                    yarn
                     yarn start
                     input message: 'Finished using the web site? (Click "Proceed" to continue)'     
                     exit
