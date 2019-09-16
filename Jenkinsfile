@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:10.16.3-alpine'
+            args '-p 3000:3000'
+        }
+    }
     environment { 
         CI = 'true'
     }
@@ -7,9 +12,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    docker stop node-server
-                    docker rm node-server
-                    docker run -d -ti  -p 3000:3000 --name node-server -v ~/node:/workspace node:10.16.3-alpine
                     rm -rf /home/node/*
                     mv ./* /home/node
                 '''
@@ -19,11 +21,8 @@ pipeline {
             steps {
                 sh '''
                     cd /home/node
-                    npm install yarn -g
-                    yarn global add forever 
-                    yarn
-                    forever stopall
-                    forever start app.js
+                    yarn start
+                    input message: 'Finished using the web site? (Click "Proceed" to continue)'     
                     exit
                 '''  
             }
