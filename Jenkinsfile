@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:10.16.3-alpine'
-            args '-p 3000:3000'
-        }
-    }
+    agent any
     environment { 
         CI = 'true'
     }
@@ -12,6 +7,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    docker run -d -ti  -p 3000:3000 --name node-server -v ~/node:/workspace node:10.16.3-alpine
                     rm -rf /home/node/*
                     mv ./* /home/node
                 '''
