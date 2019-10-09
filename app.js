@@ -8,6 +8,9 @@ const routers = require('./router')
 const serve = require('koa-static');
 const app = new Koa()
 
+process.env.NODE_ENV = 'production'
+// process.env.NODE_ENV = 'development'
+
 // 配置静态web服务的中间件
 app.use(serve(
   PATH.resolve(__dirname, "./public")

@@ -1,4 +1,4 @@
-
+const CONFIG = require('../config')
 const { User } = require('../dao/Models')
 const responseService = require('./response')
 const { setSha1 } = require('../utils/crypto')
@@ -92,7 +92,7 @@ const service = {
     let exist = await service.judgeUserNotExist(username, ctx)
     if (!exist) return false
 
-    let headImage = 'http://localhost:3000/userheads/' + ctx.filename
+    let headImage = `${CONFIG.API_SERVER}/userheads/${ctx.filename}`
     let result = await User.findOneAndUpdate({ username }, { 
       $set: { head_image: headImage }
     }, { new: true })
