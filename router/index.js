@@ -2,8 +2,8 @@
 const auth = require('./auth')
 const image = require('./image')
 const file = require('./file')
-const soup = require('./soup')
+const funny = require('./funny')
 
 module.exports = [
-  auth, image, file, soup
+  auth, image, file, funny
 ]
