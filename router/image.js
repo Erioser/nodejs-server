@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const imageService = require('../services/image')
 const router = new Router({
-  prefix: '/image'
+  prefix: '/aimage'
 });
  
 router.get('/text/url', imageService.getImageTextByUrl)

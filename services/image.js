@@ -1,4 +1,3 @@
-const fs = require('fs')
 const imageUtil = require('../utils/image')
 const responseService = require('./response')
 
