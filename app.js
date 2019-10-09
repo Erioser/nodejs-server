@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'production'
+
 const LOGM = require('./logs')
 const PATH = require('path')
 const Koa = require('koa')
@@ -8,7 +10,6 @@ const routers = require('./router')
 const serve = require('koa-static');
 const app = new Koa()
 
-process.env.NODE_ENV = 'production'
 // process.env.NODE_ENV = 'development'
 
 // 配置静态web服务的中间件
