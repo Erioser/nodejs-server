@@ -197,3 +197,80 @@ Response：
 | ---- | ---------- |
 | 200  | 成功       |
 | data  |{ imageUrl: 'http://localhost:3000/uploads/' + filename}|
+
+
+---
+## 有趣的接口
+
+Base-prefix: /funny
+
+#### 随机获取一碗毒鸡汤
+
+随机的获取一碗毒鸡汤，数据来源于github，且处理后已经保存在mongodb中了。
+
+毒鸡汤数据Schema:
+```
+const SoupSchema = new mongoose.Schema({
+  title: String,
+  hots: Number
+})
+```
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /soup/random |                                |
+| Method | Get      |                                |
+
+
+
+Response：
+
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| data  |{ title: '毒鸡汤内容', hots: '热度' }|
+
+
+#### 有道翻译
+
+中英文双向翻译接口，调用了有道提供的翻译公共api
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ----------------------------- |
+| Url    | /translate |                              |
+| Params    | text |  String Required                |
+| Method | Get      |                                |
+
+
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+
+Response Success Data: 
+```
+{
+    "code": 200,
+    "data": {
+        "type": "EN2ZH_CN",
+        "errorCode": 0,
+        "elapsedTime": 1,
+        "translateResult": [
+            [
+                {
+                    "src": "i love u",
+                    "tgt": "我爱你"
+                }
+            ]
+        ]
+    },
+    "msg": "success"
+}
+```

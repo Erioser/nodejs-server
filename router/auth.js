@@ -9,6 +9,7 @@ router.post('/login', authService.loginUser)
 router.patch('/password/update', authService.updateUserPassword)
 router.patch('/userinfo/update', authService.updateUserInfo)
 router.get('/userinfo', authService.getUserInfo)
+router.get('/userinfo/list', authService.getUserInfoList)
 router.post('/userinfo/headimage/update', fileUtils.uploadImageSingle('userheads'), authService.updateUserHeadImage)
 
 

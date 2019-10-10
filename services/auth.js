@@ -12,10 +12,11 @@ const service = {
     if (userCount > 0) {
       return responseService.fail.call(ctx, 208, '用户已存在')
     }
+    let length = await User.count()
     let user = new User({
       username,
       password_sha: setSha1(password),
-      nickname: nickname || '用户-' + (userCount + 1)
+      nickname: nickname || '用户-' + (length + 1)
     })
     let result = await user.save()
     responseService.success.call(ctx, result)
@@ -67,6 +68,12 @@ const service = {
 
     let result = await User.find({ username })
     return responseService.success.call(ctx, result[0])
+  },
+
+  // 获取全部用户信息
+  async getUserInfoList (ctx) {
+    let result = await User.find()
+    return responseService.success.call(ctx, result)
   },
 
   // 修改密码

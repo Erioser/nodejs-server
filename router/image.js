@@ -6,7 +6,6 @@ const router = new Router({
  
 router.get('/text/url', imageService.getImageTextByUrl)
 router.post('/text/image', imageService.getImageTextByImage)
-// router.post('/text/url', authService.loginUser)
 
 
 module.exports = router
