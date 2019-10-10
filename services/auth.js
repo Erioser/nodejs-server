@@ -12,15 +12,23 @@ const service = {
     if (userCount > 0) {
       return responseService.fail.call(ctx, 208, '用户已存在')
     }
-    let length = await User.count()
     let user = new User({
       username,
       password_sha: setSha1(password),
-      nickname: nickname || '用户-' + (length + 1)
+      nickname: nickname || `用户${new Date().getTime()}`
     })
     let result = await user.save()
     responseService.success.call(ctx, result)
   },
+
+  // 删除用户
+  async deleteUser (ctx) {
+    let { username } = ctx.request.body
+    let exist = await service.judgeUserNotExist(username, ctx)
+    if (!exist) return false
+    let result = await User.deleteOne({ username })
+    responseService.success.call(ctx, result)
+  }, 
 
   // 登陆
   async loginUser (ctx) {

@@ -5,6 +5,7 @@ const router = new Router({
   prefix: '/auth'
 });
 router.put('/register', authService.createUser)
+router.post('/delete', authService.deleteUser)
 router.post('/login', authService.loginUser)
 router.patch('/password/update', authService.updateUserPassword)
 router.patch('/userinfo/update', authService.updateUserInfo)
