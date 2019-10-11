@@ -12,8 +12,11 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    mv /home/node/public /home
                     rm -rf /home/node/*
                     mv ./* /home/node
+                    rm -rf /home/node/public
+                    mv /home/public /home/node
                 '''
             }
         }
