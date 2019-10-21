@@ -5,7 +5,7 @@ const router = new Router({
   prefix: '/category'
 });
 
-router.get('/classify/list', categorySerremoveTagvice.getClassifyList, commonService.handleResponse)
+router.get('/classify/list', categoryService.getClassifyList, commonService.handleResponse)
 router.get('/classify', categoryService.getClassifyById, commonService.handleResponse)
 router.put('/classify/create', categoryService.createClassify, commonService.handleResponse)
 router.post('/classify/delete', categoryService.removeClassifyById, commonService.handleResponse)
