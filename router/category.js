@@ -12,7 +12,7 @@ router.post('/classify/delete', categoryService.removeClassifyById, commonServic
 router.put('/group/create', categoryService.createGroup, commonService.handleResponse)
 router.post('/group/delete', categoryService.removeGroupFromClassify, commonService.handleResponse)
 router.put('/tag/create', categoryService.createTag, commonService.handleResponse)
-router.post('/tage/delete', categoryService., commonService.handleResponse)
+router.post('/tag/delete', categoryService.removeTag, commonService.handleResponse)
 
 
 module.exports = router
