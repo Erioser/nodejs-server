@@ -22,7 +22,39 @@ const SoupSchema = new mongoose.Schema({
 
 const Soup = mongoose.model('Soup', SoupSchema)
 
+
+// 一级分类
+const ClassifySchema = new mongoose.Schema({
+  title: String,
+  groups: Array, // { title, id }
+  hots: Number
+})
+
+const Classify = mongoose.model('Classify', ClassifySchema)
+
+
+// 二级分类
+const GroupSchema = new mongoose.Schema({
+  title: String,
+  classify_id: String,
+  hots: Number
+})
+
+const Group = mongoose.model('Group', GroupSchema)
+
+
+// 标签
+const TagSchema = new mongoose.Schema({
+  title: String,
+  hots: Number
+})
+
+const Tag = mongoose.model('Tag', TagSchema)
+
 module.exports = {
   User,
-  Soup
+  Soup,
+  Classify,
+  Group,
+  Tag
 }

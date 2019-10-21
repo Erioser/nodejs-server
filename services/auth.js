@@ -1,16 +1,25 @@
 const CONFIG = require('../config')
 const { User } = require('../dao/Models')
-const responseService = require('./response')
 const { setSha1 } = require('../utils/crypto')
 const common = require('../utils/common')
 
+
+const ERROR = {
+  UserAlreadyExist: { code: 208, msg: '用户已存在' },
+  PasswordError: { code: 400, msg: '密码错误' },
+  ParamsError: { code: 401, msg: '参数传递错误' },
+  UserNotExist: { code: 404, msg: '用户不存在' }
+}
+
+
 const service = {
   // 创建用户
-  async createUser (ctx) {
+  async createUser (ctx, next) {
     let { username, password, nickname } = ctx.request.body
     let userCount = await service.judgeUserExist(username)
     if (userCount > 0) {
-      return responseService.fail.call(ctx, 208, '用户已存在')
+      ctx.error = ERROR.UserAlreadyExist
+      return next()
     }
     let user = new User({
       username,
@@ -18,37 +27,41 @@ const service = {
       nickname: nickname || `用户${new Date().getTime()}`
     })
     let result = await user.save()
-    responseService.success.call(ctx, result)
+    ctx.payload = result
+    return next()
   },
 
   // 删除用户
-  async deleteUser (ctx) {
+  async deleteUser (ctx, next) {
     let { username } = ctx.request.body
-    let exist = await service.judgeUserNotExist(username, ctx)
+    let exist = await service.judgeUserNotExist(username, ctx, next)
     if (!exist) return false
     let result = await User.deleteOne({ username })
-    responseService.success.call(ctx, result)
+    ctx.payload = result
+    next()
   }, 
 
   // 登陆
-  async loginUser (ctx) {
+  async loginUser (ctx, next) {
     let { username, password } = ctx.request.body
     
-    let exist = await service.judgeUserNotExist(username, ctx)
+    let exist = await service.judgeUserNotExist(username, ctx, next)
     if (!exist) return false
 
     let result = await User.find({ username, password_sha: setSha1(password) })
     if (result.length) {
-      return responseService.success.call(ctx, result[0])
+      ctx.payload = result[0]
+      return next()
     }
-    return responseService.fail.call(ctx, 401, '密码错误')
+    ctx.error = ERROR.PasswordError
+    return next()
   },
 
   // 更新用户信息
-  async updateUserInfo (ctx) {
+  async updateUserInfo (ctx, next) {
     let { username, info } = ctx.request.body
     
-    let exist = await service.judgeUserNotExist(username, ctx)
+    let exist = await service.judgeUserNotExist(username, ctx, next)
     if (!exist) return false
 
     let param
@@ -56,71 +69,77 @@ const service = {
       param = typeof info === 'string' ? JSON.parse(info) : info
       delete param.username
     } catch (e) {
-      return responseService.fail.call(ctx, 401, '参数传递错误')
+      ctx.error = ERROR.ParamsError
+      return next()
     }
 
     let result = await User.findOneAndUpdate({ username }, { 
       $set: common.removeUselessProperty(param)
     }, { new: true })
-
-    responseService.success.call(ctx, result)
+    ctx.payload = result
+    return next()
   },
 
 
   // 获取用户信息
-  async getUserInfo (ctx) {
+  async getUserInfo (ctx, next) {
     let { username } = ctx.request.query
-    
-    let exist = await service.judgeUserNotExist(username, ctx)
+    let exist = await service.judgeUserNotExist(username, ctx, next)
     if (!exist) return false
 
     let result = await User.find({ username })
-    return responseService.success.call(ctx, result[0])
+    ctx.payload = result[0]
+    return next()
   },
 
   // 获取全部用户信息
-  async getUserInfoList (ctx) {
+  async getUserInfoList (ctx, next) {
     let result = await User.find()
-    return responseService.success.call(ctx, result)
+    ctx.payload = result
+    return next()
   },
 
   // 修改密码
-  async updateUserPassword (ctx) {
+  async updateUserPassword (ctx, next) {
     let { username, password, newPassword } = ctx.request.body
     
-    let exist = await service.judgeUserNotExist(username, ctx)
+    let exist = await service.judgeUserNotExist(username, ctx, next)
     if (!exist) return false
 
     let result = await User.findOneAndUpdate({ username, password_sha: setSha1(password) }, { 
       $set: { password_sha: setSha1(newPassword) }
     }, { new: true })
     if (result) {
-      return responseService.success.call(ctx, result)
+      ctx.payload = result
+      return next()
     }
-    return responseService.fail.call(ctx, 401, '密码错误')
+    ctx.error = ERROR.PasswordError
+    return next()
   },
 
   // 更改用户头像
-  async updateUserHeadImage (ctx) {
+  async updateUserHeadImage (ctx, next) {
     let { username } = ctx.request.body
 
-    let exist = await service.judgeUserNotExist(username, ctx)
+    let exist = await service.judgeUserNotExist(username, ctx, next)
     if (!exist) return false
 
     let headImage = `${CONFIG.API_SERVER}/userheads/${ctx.filename}`
     let result = await User.findOneAndUpdate({ username }, { 
       $set: { head_image: headImage }
     }, { new: true })
-    return responseService.success.call(ctx, result)
+    ctx.payload = result
+    return next()
   },
 
 
 
   // 用户不存在
-  async judgeUserNotExist (username, ctx) {
+  async judgeUserNotExist (username, ctx, next) {
     let userCount = await service.judgeUserExist(username)
     if (userCount === 0) {
-      responseService.fail.call(ctx, 404, '用户不存在')
+      ctx.error = ERROR.UserNotExist
+      next()
       return false
     }
     return true

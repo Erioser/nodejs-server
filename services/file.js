@@ -1,12 +1,12 @@
 const CONFIG = require('../config')
-const responseService = require('./response')
 
 const service = {
-  async handleUploadImage (ctx) {
+  async handleUploadImage (ctx, next) {
     let data = {
       imageUrl: `${CONFIG.API_SERVER}/uploads/${ctx.filename}`
     }
-    responseService.success.call(ctx, data)
+    ctx.payload = data
+    next()
   }
 }
 module.exports = service

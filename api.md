@@ -192,6 +192,172 @@ Response：
 | 200  | 成功       |
 | 404  | 用户不存在 |
 
+## Category相关（一级、二级分类、标签）
+
+Base-prefix: /category
+
+Schema：
+```javascript
+// 一级分类
+const ClassifySchema = new mongoose.Schema({
+  title: String,
+  groups: Array<GroupSchema>, // { title, id }
+  hots: Number
+})
+
+// 二级分类
+const GroupSchema = new mongoose.Schema({
+  title: String,
+  classify_id: String,
+  hots: Number
+})
+// 标签
+const TagSchema = new mongoose.Schema({
+  title: String,
+  hots: Number
+})
+```
+
+####  获取全部一级分类
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /classify/list |                           |
+| Method | Get      |                                |
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| 404  | classify不存在 |
+
+####  获取某个一级分类
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /classify |                           |
+| Params    | id |  classify_id               |
+| Method | Get      |                                |
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| 404  | classify不存在 |
+
+####  删除某个一级分类
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /classify/delete |                           |
+| Params    | id |  classify_id               |
+| Method | POST      |                                |
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| 404  | classify不存在 |
+
+
+####  新增某个一级分类
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /classify/create |                           |
+| Params    | title |  标题               |
+| Method | PUT      |                                |
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| 208  | classify已存在 |
+
+####  新增一个二级分类
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /group/create |                           |
+| Params    | title |  标题               |
+| Params    | classifyId |  所属一级分类ID               |
+| Method | PUT      |                                |
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| 404  | classify不存在 |
+| 208  | classify中此group已存在 |
+
+####  删除一个二级分类
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /group/delete |                           |
+| Params    | groupId |                 |
+| Params    | classifyId |  所属一级分类ID               |
+| Method | POST      |                                |
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| 404  | classify不存在 |
+| 404  | classify中此group不存在 |
+
+####  新增一个标签
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /tag/create |                           |
+| Params    | title |                 |
+| Method | PUT      |                                |
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| 208  | tag已存在 |
+
+####  删除一个标签
+
+Request：
+
+| 参数    | 值 | 属性                           |
+| ------ | --------- | ------------------------------ |
+| Url    | /tag/delete |                           |
+| Params    | id |                 |
+| Method | POST      |                                |
+
+Response：
+
+| 状态码  |描述 |
+| ---- | ---------- |
+| 200  | 成功       |
+| 404  | tag不存在 |
+
 ---
 ## File相关（上传、下载）
 
